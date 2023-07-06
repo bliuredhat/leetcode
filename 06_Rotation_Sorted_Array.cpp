@@ -27,17 +27,42 @@ int findMin(std::vector<int>& arr) {
 	return res;
 }
 
-int findVal(std::vector<int>& arr) {
-
-
+//查找目标值的索引
+int findVal(std::vector<int>& arr, int val) {
+	int idx = -1;
+	int size = arr.size();
+	int left = 0;
+	int right = size - 1;
+	while(left < right) {
+		std::cout << "idx:" << left << "-"<< right << std::endl;
+		int mid = left + (right - left) / 2;
+		if (arr[mid] == val) {
+			return mid;
+		}
+		if (arr[mid] >= arr[left]) {
+			if (val < arr[mid] && val > arr[left]) {
+				right = mid - 1;
+			} else {
+				left = mid + 1;
+			}
+		} else {
+			if (arr[mid] < val && val < arr[right]) {
+				left = mid + 1;
+			} else {
+				right = mid-1;
+			}
+		}
+	}
+	return idx;
 }
 
 
 int main() {
 	std::vector<int> arr = {6,7,8,9,1,2,3};
-	int res = findMin(arr);
+	//int res = findMin(arr);
+	int res = findVal(arr, 2);
 	std::cout << res << std::endl;
-
+	return 0;
 }
 
 
