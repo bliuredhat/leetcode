@@ -2,11 +2,14 @@
  * @Author: bliuredhat@gmail.com
  * @Date: 2025-04-03 11:37:53
  * @LastEditors: bliuredhat@gmail.com
- * @LastEditTime: 2025-04-03 15:14:40
+ * @LastEditTime: 2025-04-03 16:55:49
  * @Description: 
  */
 #include <vector>
 #include <iostream>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
 
 using namespace std;
 
@@ -37,7 +40,18 @@ ListNodePtr buildList(std::vector<int> vec) {
     }
     return res;
 }
+
+void printList(ListNodePtr a) {
+    auto* tmp = a;
+    while(tmp!=nullptr) {
+        std::cout << " , " <<tmp->val;
+        tmp = tmp->next;
+    }
+    std::cout << std::endl;
+}
+
 /*
+第一、
 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
 请你将两个数相加，并以相同形式返回一个表示和的链表。
 */
@@ -73,18 +87,13 @@ ListNodePtr sum2List(ListNodePtr a, ListNodePtr b) {
     }
     return res;
 }
-
-void printList(ListNodePtr a) {
-    auto* tmp = a;
-    while(tmp!=nullptr) {
-        std::cout << " , " <<tmp->val;
-        tmp = tmp->next;
-    }
-    std::cout << std::endl;
-}
-
+/*
 int main() {
     std::vector<int> v1{1,2,3,4};
+    std::vector<int>::iterator begin = v1.begin();
+    for (; begin!= v1.end(); begin++) {
+        std::cout << *begin;
+    }
     auto l1 = buildList(v1);
     printList(l1);
     std::vector<int> v2{9,9,9,9,9};
@@ -92,5 +101,51 @@ int main() {
     printList(l2);
     auto res = sum2List(l1,l2);
     printList(res);
+    return 1;
+}
+*/
+
+//************line*******
+
+/*
+第二、
+无重复字符的最长子串；给定一个字符串 s ，请你找出其中不含有重复字符的 最长 子串 的长度。
+*/
+int longestSubString(const std::string& inputStr) {
+    if (inputStr.empty()) {
+        return 0;
+    }
+    int res = 0;
+    std::unordered_set<char> mid_set;
+    mid_set.reserve(inputStr.size());
+    int size = inputStr.size();
+    int pre =0;
+    int next = 0;
+    for (; next < size; next ++) {
+        char val = inputStr.at(next);
+        if (mid_set.find(val) == mid_set.end()) {
+            mid_set.insert(val);
+        } else {
+            while (pre < next) {
+                char tmp = inputStr.at(pre ++);
+                if (tmp != val) {
+                    mid_set.erase(tmp);
+                } else {
+                    break;
+                }
+            }
+        }
+        if (res < mid_set.size()){
+            res = mid_set.size();
+        }
+    }
+    return res;
+}
+
+int main() {
+    std::string example{"pwwkew"};
+    std::cout << example << std::endl;
+    int res = longestSubString(example);
+    std::cout << "len: " << res << std::endl;
     return 1;
 }
