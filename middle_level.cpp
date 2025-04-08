@@ -2,11 +2,12 @@
  * @Author: bliuredhat@gmail.com
  * @Date: 2025-04-03 11:37:53
  * @LastEditors: bliuredhat@gmail.com
- * @LastEditTime: 2025-04-03 16:55:49
+ * @LastEditTime: 2025-04-07 14:24:02
  * @Description: 
  */
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -141,11 +142,64 @@ int longestSubString(const std::string& inputStr) {
     }
     return res;
 }
-
+/*
 int main() {
     std::string example{"pwwkew"};
     std::cout << example << std::endl;
     int res = longestSubString(example);
     std::cout << "len: " << res << std::endl;
+    return 1;
+}
+*/
+
+
+/*
+第三、
+最长回文字符串。
+*/
+
+std::string longestPalindrome(std::string& s) {
+    if (s.empty() || s.size() == 1) {
+        return s;
+    }
+    std::string newStr = "^";
+    for (char ch : s) {
+        newStr += "#";
+        newStr += ch;
+    }
+    newStr += "#$";
+    std::cout <<"NewStr: "<< newStr << std::endl ;
+    int R = 0;
+    int C = 0;
+    int size = newStr.size();
+    std::vector<int> Pvec(size, 0);
+    for (int idx = 0; idx < size; idx ++) {
+        int i_mirror = 2 * C - idx;  // i 关于 C 的对称点
+        if (R > idx) {
+            Pvec[idx] = std::min(R - idx, Pvec[i_mirror]);
+        }
+        while(newStr[idx - Pvec[idx] -1] == newStr[idx + Pvec[idx] +1]) {
+            Pvec[idx] ++;
+        }
+        if (R < Pvec[idx] + idx) {
+            R = Pvec[idx] + idx;
+            C = idx;
+        }
+    }
+    int max_r = 0, c = 0;
+    for (int idx=0; idx < size; idx ++) {
+        if (max_r < Pvec[idx]) {
+            max_r = Pvec[idx];
+            c = idx;
+        }
+    }
+    int start = (c - max_r) / 2;
+    return s.substr(start, max_r);
+}
+
+int main() {
+    std::string originStr = "ababa";
+    auto res = longestPalindrome(originStr); 
+    std::cout <<"result:" << res <<std::endl;
     return 1;
 }
