@@ -2,7 +2,7 @@
  * @Author: bliuredhat@gmail.com
  * @Date: 2025-04-03 11:37:53
  * @LastEditors: bliuredhat@gmail.com
- * @LastEditTime: 2025-04-07 14:24:02
+ * @LastEditTime: 2025-04-10 14:53:44
  * @Description: 
  */
 #include <vector>
@@ -22,25 +22,6 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 typedef ListNode* ListNodePtr;
-
-ListNodePtr buildList(std::vector<int> vec) {
-    ListNodePtr res = nullptr;
-    if  (vec.empty()) {
-        return res;
-    }
-    ListNodePtr tmpPtr = nullptr;
-    for (auto& val : vec) {
-        auto* ptr = new ListNode(val);
-        if (res == nullptr) {
-            res = ptr;
-            tmpPtr =res;
-        } else {
-            tmpPtr->next = ptr;
-            tmpPtr = tmpPtr->next;
-        }
-    }
-    return res;
-}
 
 void printList(ListNodePtr a) {
     auto* tmp = a;
