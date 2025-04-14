@@ -64,7 +64,7 @@ std::vector< std::vector<int> > traverseLevelTree( TreeNode* root) {
 			data.push_back(item->val);
 			que.pop();
 		}
-		res.push_front(data);
+		res.push_back(data);
 	}
 	return res;
 }
