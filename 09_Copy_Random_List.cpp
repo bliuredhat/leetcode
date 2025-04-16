@@ -1,8 +1,8 @@
 /*
  * @Author: bo.liu bo.liu@ushow.media
  * @Date: 2025-03-25 16:42:24
- * @LastEditors: bo.liu bo.liu@ushow.media
- * @LastEditTime: 2025-03-25 17:20:40
+ * @LastEditors: bliuredhat@gmail.com
+ * @LastEditTime: 2025-04-16 15:20:30
  * @FilePath: /code_review/09_Copy_Random_List.cpp
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -46,8 +46,9 @@ RandomNode* copyRandomList(RandomNode* head) {
   origin = head;
   tmp = dump->next;
   while(origin != nullptr) {
-    tmp->random = (origin->random != nullptr) ? dataMap[origin] : nullptr;
+    tmp->random = (origin->random != nullptr) ? dataMap[origin->random] : nullptr;
     origin = origin->next;
+    tmp = tmp->next;
   }
   return dump->next;
 }
@@ -62,7 +63,7 @@ public:
             return nullptr;
         }
         if (!cachedNode.count(head)) {
-            RandomNode* headNew = new Node(head->val);
+            RandomNode* headNew = new RandomNode(head->value);
             cachedNode[head] = headNew;
             headNew->next = copyRandomList(head->next);
             headNew->random = copyRandomList(head->random);
