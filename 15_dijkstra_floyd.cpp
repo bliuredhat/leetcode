@@ -2,7 +2,7 @@
  * @Author: bliuredhat@gmail.com
  * @Date: 2025-04-15 11:17:36
  * @LastEditors: bliuredhat@gmail.com
- * @LastEditTime: 2025-04-15 17:15:16
+ * @LastEditTime: 2025-04-16 12:38:43
  * @Description: 
  */
 #include <vector>
@@ -79,8 +79,7 @@ std::vector<std::vector<int>> floyd(std::vector<std::vector<int>> graph) {
     }
     return res;
 }
-
-
+/*
 int main() {
     std::vector<std::vector<int>> graph = {
 			{0, 6, INF, 1, INF}, //不直接相连的点距离就是无穷大
@@ -96,4 +95,78 @@ int main() {
 
     return 1;
 }
+*/
 
+
+/*
+松弛法（relaxation）是一数学术语，描述的是一些求解方法，这些方法会通过逐步接近的方式获得相关问题的最佳解法。
+每运用一次松弛法就好像我们“移动”了一次，而我们要做的就是在尽可能少的移动次数内找到最佳解决方案。
+*/
+//bellman-ford算法
+struct Edge
+{
+    int s;
+    int d;
+    int weight;
+};
+
+class Graph {
+public:
+    int V, E;
+    std::vector<Edge> edges;
+
+    Graph(int v, int e) : V(v), E(e) {}
+    
+    void addEdge(int src, int dest, int weight) {
+        edges.push_back({src, dest, weight});
+    }
+};
+std::vector<int> BellmanFord(Graph& graph, int start) {
+     int V = graph.V; //顶点个数；
+    int E = graph.E;  //边的个数；
+    std::vector<int> dist(graph.V, INT_MAX);
+    dist[start] = 0;
+    for (int i=0; i < graph.V-1; i++) {
+        for (int j=0; j<graph.E; j++) {
+            int s = graph.edges[j].s;
+            int d = graph.edges[j].d;
+            int weight = graph.edges[j].weight;
+            if (dist[s] != INT_MAX && dist[d] > (dist[s] + weight)) {
+                dist[d] = dist[s] + weight;
+            }
+        }
+    }
+    // 检查负权环
+    for (int i = 0; i < E; i++) {
+        int u = graph.edges[i].s;
+        int v = graph.edges[i].d;
+        int weight = graph.edges[i].weight;
+        if (dist[u] != INT_MAX && dist[u] + weight < dist[v]) {
+            std::cout << "图中存在负权环！" << std::endl;
+            break;
+        }
+    }
+    return dist;
+}
+
+int main() {
+    int V = 5; // 顶点数
+    int E = 8; // 边数
+    Graph graph(V, E);
+
+    // 添加边
+    graph.addEdge(0, 1, -1);
+    graph.addEdge(0, 2, 4);
+    graph.addEdge(1, 2, 3);
+    graph.addEdge(1, 3, 2);
+    graph.addEdge(1, 4, 2);
+    graph.addEdge(3, 2, 5);
+    graph.addEdge(3, 1, 1);
+    graph.addEdge(4, 3, -3);
+
+    auto res = BellmanFord(graph, 0);
+    for (auto& val : res ) {
+        std::cout <<" , " << val; 
+    }
+    return 0;
+}
