@@ -2,7 +2,7 @@
  * @Author: bliuredhat@gmail.com
  * @Date: 2025-04-18 12:11:06
  * @LastEditors: bliuredhat@gmail.com
- * @LastEditTime: 2025-04-18 16:07:45
+ * @LastEditTime: 2025-04-18 16:37:12
  * @Description: 
  */
 #include <vector>
@@ -73,7 +73,6 @@ void head_adjust(std::vector<int>& vec, int root, int size){
     }
     vec[root] = val;
 }
-
 
 void heapSort(std::vector<int>& vec) {
     int size = vec.size() ;
